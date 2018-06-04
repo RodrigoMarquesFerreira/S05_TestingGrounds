@@ -16,6 +16,8 @@ class S05_TESTINGGROUNDS_API UBTT_ChooseNextWaypoint : public UBTTaskNode
 	
 		virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
-	
-	
+protected:
+	UPROPERTY(EditAnyWhere, Category = "Blackboard")
+	struct FBlackboardKeySelector IndexKey;
+
 };
