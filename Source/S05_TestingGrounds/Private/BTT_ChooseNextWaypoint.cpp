@@ -1,19 +1,25 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// UnEpicGame Studio Copyrights.
 
 #include "BTT_ChooseNextWaypoint.h"
 #include "Runtime/AIModule/Classes/BehaviorTree/BlackboardComponent.h"
 #include "Runtime/AIModule/Classes/AIController.h"
-#include "PatrollingGuard.h"
+#include "Patrolling.h"
 
 EBTNodeResult::Type UBTT_ChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {
-	//TODO  protect against empty patrol routes
-	
 	//Get the Patrol Points
-	AAIController* AIController = OwnerComp.GetAIOwner();
-	APawn* ControlledPawn = AIController->GetPawn();
-	auto PatrollingGuard = Cast<APatrollingGuard>(ControlledPawn);
-	PatrolPoints = PatrollingGuard->Waypoints;
+	APawn* ControlledPawn = OwnerComp.GetAIOwner()->GetPawn();
+	UPatrolling* PatrolRoute = ControlledPawn->FindComponentByClass<UPatrolling>();
+	//Protect against no Patrol Route Component
+	if (!ensure(PatrolRoute)) { return EBTNodeResult::Failed; }
+	PatrolPoints = PatrolRoute->GetPatrolPoints();
+	//Protect against no Patrol Route Component
+	if (PatrolPoints.Num() == 0 ) 
+	{ 
+		UE_LOG(LogTemp, Warning, TEXT("The guard: %s is missing patrol points"), *ControlledPawn->GetName())
+
+		return EBTNodeResult::Failed;
+	}
 
 	//Set next Waypoint
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
