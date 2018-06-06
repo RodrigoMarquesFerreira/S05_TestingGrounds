@@ -3,13 +3,13 @@
 #include "BTT_ChooseNextWaypoint.h"
 #include "Runtime/AIModule/Classes/BehaviorTree/BlackboardComponent.h"
 #include "Runtime/AIModule/Classes/AIController.h"
-#include "Patrolling.h"
+#include "PatrolRoute.h"
 
 EBTNodeResult::Type UBTT_ChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {
 	//Get the Patrol Points
 	APawn* ControlledPawn = OwnerComp.GetAIOwner()->GetPawn();
-	UPatrolling* PatrolRoute = ControlledPawn->FindComponentByClass<UPatrolling>();
+	UPatrolRoute* PatrolRoute = ControlledPawn->FindComponentByClass<UPatrolRoute>();
 	//Protect against no Patrol Route Component
 	if (!ensure(PatrolRoute)) { return EBTNodeResult::Failed; }
 	PatrolPoints = PatrolRoute->GetPatrolPoints();
