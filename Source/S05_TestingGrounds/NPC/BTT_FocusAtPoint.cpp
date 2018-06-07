@@ -8,9 +8,10 @@ EBTNodeResult::Type UBTT_FocusAtPoint::ExecuteTask(UBehaviorTreeComponent & Owne
 {
 	AAIController* AIController = OwnerComp.GetAIOwner();
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
-	FVector LookAtTarget = BlackboardComp->GetValueAsVector(TargetLookKey.SelectedKeyName);
-	UE_LOG(LogTemp, Warning, TEXT("LookAtTarget = %s"), *LookAtTarget.ToString())
-	AIController->SetFocalPoint(LookAtTarget);
+	UObject* LookAtTarget = BlackboardComp->GetValueAsObject(TargetLookKey.SelectedKeyName);
+	if (!LookAtTarget) { UE_LOG(LogTemp, Warning, TEXT("LookAtTarget = null")) return EBTNodeResult::Succeeded; }
+	UE_LOG(LogTemp, Warning, TEXT("LookAtTarget = %s"), *LookAtTarget->GetName())
+	AIController->SetFocus(Cast<AActor>(LookAtTarget));
 
 	return EBTNodeResult::Succeeded;
 }
