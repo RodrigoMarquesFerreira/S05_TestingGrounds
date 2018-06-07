@@ -9,7 +9,7 @@ EBTNodeResult::Type UBTT_FocusAtPoint::ExecuteTask(UBehaviorTreeComponent & Owne
 	AAIController* AIController = OwnerComp.GetAIOwner();
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	UObject* LookAtTarget = BlackboardComp->GetValueAsObject(TargetLookKey.SelectedKeyName);
-	if (!LookAtTarget) { UE_LOG(LogTemp, Warning, TEXT("LookAtTarget = null")) return EBTNodeResult::Succeeded; }
+	if (!LookAtTarget) { UE_LOG(LogTemp, Warning, TEXT("LookAtTarget = null")) return EBTNodeResult::Failed; }
 	UE_LOG(LogTemp, Warning, TEXT("LookAtTarget = %s"), *LookAtTarget->GetName())
 	AIController->SetFocus(Cast<AActor>(LookAtTarget));
 
