@@ -11,8 +11,7 @@ void UBTS_LastSeenLocation::TickNode(UBehaviorTreeComponent & OwnerComp, uint8 *
 	if (IsValid(TargetObject))
 	{
 		FVector Location = Cast<AActor>(TargetObject)->GetActorLocation();
-		UE_LOG(LogTemp, Warning, TEXT("LastLocation = %s"), *Location.ToString())
-			BlackboardComp->SetValueAsVector(LastLocation.SelectedKeyName, Location);
+		BlackboardComp->SetValueAsVector(LastLocation.SelectedKeyName, Location);
 		return;
 		
 	}

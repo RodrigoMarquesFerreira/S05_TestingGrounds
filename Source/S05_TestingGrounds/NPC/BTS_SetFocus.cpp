@@ -12,11 +12,9 @@ void UBTS_SetFocus::TickNode(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMem
 	UObject* FocusTarget = BlackboardComp->GetValueAsObject(TargetFocus.SelectedKeyName);
 	if (!FocusTarget)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FocusTarget = Gameplay"))
 		AIController->ClearFocus(EAIFocusPriority::Gameplay);
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("LookAtTarget = %s"), *FocusTarget->GetName())
 	AIController->SetFocus(Cast<AActor>(FocusTarget));
 	return;
 }

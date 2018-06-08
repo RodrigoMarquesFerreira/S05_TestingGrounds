@@ -35,6 +35,8 @@ public:
 
 protected:
 	virtual void BeginPlay();
+	
+	void FireGun();
 
 	AGun* Gun;
 
