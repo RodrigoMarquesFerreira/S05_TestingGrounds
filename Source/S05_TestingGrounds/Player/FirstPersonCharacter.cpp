@@ -24,7 +24,7 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
-
+	
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
@@ -65,11 +65,13 @@ void AFirstPersonCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
-	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
+	//set the gun
 	if (!GunBlueprint) { UE_LOG(LogTemp, Warning, TEXT("GunBlueprint Null reference")) return; }
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
 	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-
+	Gun->AnimInstance = Mesh1P->GetAnimInstance();
+	
+	
 	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
 	if (bUsingMotionControllers)
 	{
@@ -79,6 +81,12 @@ void AFirstPersonCharacter::BeginPlay()
 	{
 		Mesh1P->SetHiddenInGame(false, true);
 	}
+}
+
+void AFirstPersonCharacter::FireGun()
+{
+	Gun->OnFire();
+	return;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,8 +101,9 @@ void AFirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	// Bind fire event
-	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFirstPersonCharacter::OnFire);
+
+	// Bind fire event &AFirstPersonCharacter::OnFire
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFirstPersonCharacter::FireGun);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
