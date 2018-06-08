@@ -18,8 +18,7 @@ void UBTS_LastSeenLocation::TickNode(UBehaviorTreeComponent & OwnerComp, uint8 *
 	}
 	else
 	{
-		BlackboardComp->ClearValue(LastLocation.SelectedKeyName);
-		return;
+			return;
 	}
 	
 }
