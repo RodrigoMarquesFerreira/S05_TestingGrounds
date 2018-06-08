@@ -7,6 +7,7 @@
 #include "FirstPersonCharacter.generated.h"
 
 class UInputComponent;
+class AGun;
 
 UCLASS(config=Game)
 class AFirstPersonCharacter : public ACharacter
@@ -35,6 +36,8 @@ public:
 protected:
 	virtual void BeginPlay();
 
+	AGun* Gun;
+
 public:
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
@@ -44,8 +47,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
-
-
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AGun> GunBlueprint;
 	
 
 
