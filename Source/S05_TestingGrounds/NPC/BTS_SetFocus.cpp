@@ -3,6 +3,7 @@
 #include "BTS_SetFocus.h"
 #include "Runtime/AIModule/Classes/BehaviorTree/BlackboardComponent.h"
 #include "Runtime/AIModule/Classes/AIController.h"
+#include "NPC_Guard.h"
 
 
 void UBTS_SetFocus::TickNode(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory, float DeltaSeconds)
@@ -10,11 +11,14 @@ void UBTS_SetFocus::TickNode(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMem
 	AAIController* AIController = OwnerComp.GetAIOwner();
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	UObject* FocusTarget = BlackboardComp->GetValueAsObject(TargetFocus.SelectedKeyName);
+	AIController->ClearFocus(EAIFocusPriority::Gameplay);
+	ANPC_Guard* Guard = Cast<ANPC_Guard>(AIController->GetPawn());
 	if (!FocusTarget)
 	{
-		AIController->ClearFocus(EAIFocusPriority::Gameplay);
+		Guard->SetAimState(false);
 		return;
 	}
 	AIController->SetFocus(Cast<AActor>(FocusTarget));
+	Guard->SetAimState(true);
 	return;
 }
