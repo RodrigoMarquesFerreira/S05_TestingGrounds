@@ -35,7 +35,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser);
-	
+	UFUNCTION(BlueprintPure, Category = "Health")
+	bool IsDead();
+
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	int32 MaxHealth = 100;
 

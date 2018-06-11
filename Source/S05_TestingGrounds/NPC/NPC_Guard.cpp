@@ -55,3 +55,9 @@ float ANPC_Guard::TakeDamage(float DamageAmount, FDamageEvent const & DamageEven
 	return 0.0f;
 }
 
+bool ANPC_Guard::IsDead()
+{
+	if (CurrentHealth <= 0) { return true; }
+	return false;
+}
+
