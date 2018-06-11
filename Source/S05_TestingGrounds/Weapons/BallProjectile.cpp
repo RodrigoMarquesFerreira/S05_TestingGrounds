@@ -3,6 +3,10 @@
 #include "BallProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "NPC/NPC_Guard.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Runtime/Engine/Classes/GameFramework/DamageType.h"
+#include "Runtime/Engine/Classes/Engine/EngineTypes.h"
 
 ABallProjectile::ABallProjectile() 
 {
@@ -33,6 +37,22 @@ ABallProjectile::ABallProjectile()
 
 void ABallProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	ANPC_Guard* HitActor = Cast<ANPC_Guard>(OtherActor);
+	if (HitActor != NULL)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Guard was Hited"))
+			UGameplayStatics::ApplyPointDamage(
+				HitActor,
+				Damage,
+				NormalImpulse,
+				Hit,
+				HitActor->GetController(),
+				this,
+				UDamageType::StaticClass()
+			);
+		Destroy();
+		
+	}
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{

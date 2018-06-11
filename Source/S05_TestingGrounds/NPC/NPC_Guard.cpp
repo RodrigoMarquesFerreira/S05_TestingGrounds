@@ -38,3 +38,20 @@ void ANPC_Guard::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 }
 
+float ANPC_Guard::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	if (CurrentHealth > 0)
+	{
+		CurrentHealth -= DamageAmount;
+		if (CurrentHealth <= 0) 
+		{ 
+			CurrentHealth = 0; 
+			DetachFromControllerPendingDestroy();
+		}
+		
+		UE_LOG(LogTemp, Warning, TEXT("Guard Health = %d, type of damage = %d"), CurrentHealth, DamageEvent.GetTypeID())
+	}
+	
+	return 0.0f;
+}
+
