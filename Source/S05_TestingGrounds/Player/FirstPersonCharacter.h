@@ -30,9 +30,13 @@ protected:
 	virtual void BeginPlay();
 	
 	void FireGun();
+	void NoFireGun();
 	void AimGun();
 	void ReleaseAimGun();
 	AGun* Gun;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	int32 PlayerMaxHealth;
 
 public:
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
@@ -47,7 +51,9 @@ public:
 	TSubclassOf<class AGun> GunBlueprint;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Aim")
-	bool bIsAiming = false;
+	bool bAiming;
+	UPROPERTY(BlueprintReadOnly, Category = "Fire")
+	bool bFiring;
 	
 protected:
 	
