@@ -18,7 +18,7 @@ class AFirstPersonCharacter : public ACharacter
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
-	
+		
 	UPROPERTY(EditDefaultsOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* SpringArm;
 
@@ -34,6 +34,8 @@ protected:
 	void AimGun();
 	void ReleaseAimGun();
 	AGun* Gun;
+
+	
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	int32 PlayerMaxHealth;
@@ -53,8 +55,11 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Aim")
 	bool bAiming;
 	UPROPERTY(BlueprintReadOnly, Category = "Fire")
-	bool bFiring;
-	
+	bool bFiringON = false;
+	UPROPERTY(BlueprintReadWrite, Category = "Camera")
+	float ArmLength = 200.0f;
+
+
 protected:
 	
 

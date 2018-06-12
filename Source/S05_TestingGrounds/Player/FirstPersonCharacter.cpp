@@ -34,7 +34,7 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("TP_SpringArm"));
 	SpringArm->SetupAttachment(GetCapsuleComponent());
-	SpringArm->TargetArmLength = 200.0f;
+	SpringArm->TargetArmLength = ArmLength;
 	SpringArm->bUsePawnControlRotation = true;
 	
 	// Create a CameraComponent	
@@ -51,7 +51,6 @@ void AFirstPersonCharacter::BeginPlay()
 	Super::BeginPlay();
 	//Set aiming state
 	bAiming = false;
-	bFiring = false;
 	//set the gun
 	if (!GunBlueprint) { UE_LOG(LogTemp, Warning, TEXT("GunBlueprint Null reference")) return; }
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
@@ -64,8 +63,7 @@ void AFirstPersonCharacter::FireGun()
 {
 	if (bAiming == true)
 	{
-		bFiring = true;
-		Gun->AnimInstance = GetMesh()->GetAnimInstance();
+		bFiringON = true;
 		Gun->OnFire();
 	}
 
@@ -74,20 +72,24 @@ void AFirstPersonCharacter::FireGun()
 
 void AFirstPersonCharacter::NoFireGun()
 {
-	bFiring = false;
+	bFiringON = false;
 }
 
 void AFirstPersonCharacter::AimGun()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Aiming"))
 	bAiming = true;
+	this->SpringArm->TargetArmLength = 100.0f;
 	this->bUseControllerRotationYaw = true;
 }
 
 void AFirstPersonCharacter::ReleaseAimGun()
 {
 	bAiming = false;
+	this->SpringArm->TargetArmLength = 200.0f;
 	this->bUseControllerRotationYaw = false;
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 // Input
